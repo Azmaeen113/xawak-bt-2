@@ -14,9 +14,10 @@ import InfinityLogoSection from './components/InfinityLogoSection';
 import Footer from './components/Footer';
 import MouseEffect from './components/MouseEffect';
 import RocketCursor from './components/RocketCursor';
+import KatanaCursor from './components/KatanaCursor';
 
 function App() {
-  const [cursorEffect, setCursorEffect] = useState<'sparkle' | 'rocket'>('rocket');
+  const [cursorEffect, setCursorEffect] = useState<'sparkle' | 'rocket' | 'katana'>('katana');
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile devices
@@ -38,7 +39,11 @@ function App() {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === 'c') {
-        setCursorEffect(prev => prev === 'sparkle' ? 'rocket' : 'sparkle');
+        setCursorEffect(prev => {
+          if (prev === 'sparkle') return 'rocket';
+          if (prev === 'rocket') return 'katana';
+          return 'sparkle';
+        });
       }
     };
 
@@ -59,10 +64,26 @@ function App() {
     };
   }, [isMobile]);
 
+  // Render the appropriate cursor based on the selected effect
+  const renderCursor = () => {
+    if (isMobile) return null;
+
+    switch (cursorEffect) {
+      case 'sparkle':
+        return <MouseEffect />;
+      case 'rocket':
+        return <RocketCursor />;
+      case 'katana':
+        return <KatanaCursor />;
+      default:
+        return <KatanaCursor />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Custom cursor effect - only on desktop */}
-      {!isMobile && (cursorEffect === 'sparkle' ? <MouseEffect /> : <RocketCursor />)}
+      {renderCursor()}
 
       <StarBackground />
       <Navigation />
