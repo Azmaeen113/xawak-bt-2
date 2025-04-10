@@ -25,9 +25,19 @@ const RocketCursor: React.FC = () => {
   // Colors for rocket flame particles - bluish sparkle colors
   const flameColors = ['#00BFFF', '#1E90FF', '#4169E1', '#0000FF', '#87CEFA', '#ADD8E6'];
 
-  // Track mouse position and movement
+  // Track mouse position and movement - with touch detection
   useEffect(() => {
+    // Skip event listeners if we detect touch capability
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
+      // Prevent handling touch events disguised as mouse events
+      if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) {
+        return;
+      }
+
       setMousePosition({ x: e.clientX, y: e.clientY });
 
       // Check if mouse is actually moving (not just hovering)
@@ -52,7 +62,8 @@ const RocketCursor: React.FC = () => {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    // Use passive event listener to improve performance
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -64,6 +75,11 @@ const RocketCursor: React.FC = () => {
 
   // Create and animate particles
   useEffect(() => {
+    // Skip animation on touch devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
     const animate = (time: number) => {
       if (previousTimeRef.current === undefined) {
         previousTimeRef.current = time;

@@ -19,33 +19,49 @@ const MouseEffect: React.FC = () => {
   const previousTimeRef = useRef<number>();
   const particleIdRef = useRef(0);
   const lastParticleTimeRef = useRef(0);
-  
+
   // Colors for particles
   const colors = ['#FFD700', '#FF0000', '#6A0DAD', '#1E3A8A', '#FFFFFF'];
-  
-  // Track mouse position
+
+  // Track mouse position with touch detection
   useEffect(() => {
+    // Skip event listeners if we detect touch capability
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
+      // Prevent handling touch events disguised as mouse events
+      if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) {
+        return;
+      }
+
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    
+
+    // Use passive event listener to improve performance
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
-  
+
   // Create and animate particles
   useEffect(() => {
+    // Skip animation on touch devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      return;
+    }
+
     const animate = (time: number) => {
       if (previousTimeRef.current === undefined) {
         previousTimeRef.current = time;
       }
-      
+
       const deltaTime = time - (previousTimeRef.current || 0);
       previousTimeRef.current = time;
-      
+
       // Create new particles at intervals
       if (time - lastParticleTimeRef.current > 50) { // Create a particle every 50ms
         const newParticle: Particle = {
@@ -59,23 +75,23 @@ const MouseEffect: React.FC = () => {
           lifespan: Math.random() * 1000 + 500, // 500-1500ms
           createdAt: time,
         };
-        
+
         setParticles(prevParticles => [...prevParticles, newParticle]);
         lastParticleTimeRef.current = time;
       }
-      
+
       // Update existing particles
-      setParticles(prevParticles => 
+      setParticles(prevParticles =>
         prevParticles
           .map(particle => {
             const age = time - particle.createdAt;
             const lifeProgress = age / particle.lifespan;
-            
+
             // Remove particles that have exceeded their lifespan
             if (lifeProgress >= 1) {
               return null;
             }
-            
+
             // Update particle properties based on age
             return {
               ...particle,
@@ -87,19 +103,19 @@ const MouseEffect: React.FC = () => {
           })
           .filter(Boolean) as Particle[]
       );
-      
+
       requestRef.current = requestAnimationFrame(animate);
     };
-    
+
     requestRef.current = requestAnimationFrame(animate);
-    
+
     return () => {
       if (requestRef.current) {
         cancelAnimationFrame(requestRef.current);
       }
     };
   }, [mousePosition]);
-  
+
   // Custom cursor styles
   const cursorStyle: React.CSSProperties = {
     position: 'fixed',
@@ -111,32 +127,32 @@ const MouseEffect: React.FC = () => {
     zIndex: 9999,
     transform: 'translate(-50%, -50%)',
   };
-  
+
   return (
     <>
       {/* Custom cursor */}
       <div style={cursorStyle}>
         <div className="relative w-full h-full">
-          <svg 
-            width="30" 
-            height="30" 
-            viewBox="0 0 24 24" 
-            fill="none" 
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="animate-pulse"
           >
-            <path 
-              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
-              fill="#FFD700" 
-              stroke="#FFD700" 
-              strokeWidth="1.5" 
-              strokeLinecap="round" 
+            <path
+              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+              fill="#FFD700"
+              stroke="#FFD700"
+              strokeWidth="1.5"
+              strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         </div>
       </div>
-      
+
       {/* Particles */}
       {particles.map(particle => (
         <div

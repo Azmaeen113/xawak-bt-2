@@ -37,11 +37,11 @@ const InfinityLogoSection: React.FC = () => {
       {/* Content overlay */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full w-full px-4">
         <div className="text-center mb-8 max-w-3xl">
-          <h2 className="text-5xl md:text-6xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#87CEEB] to-[#1E90FF] mb-6 animate-pulse-glow">
+          <h2 className="text-5xl md:text-6xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#87CEEB] to-[#1E90FF] mb-6 animate-pulse-glow whitespace-nowrap">
             Infinite Possibilities
           </h2>
-          <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
-            Explore the boundless universe of XAWAK, where innovation meets infinity
+          <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto px-4">
+            <span className="inline-block">Explore the boundless universe of XAWAK,</span> <span className="inline-block">where innovation meets infinity</span>
           </p>
         </div>
 

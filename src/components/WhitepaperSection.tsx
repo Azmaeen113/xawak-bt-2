@@ -7,11 +7,11 @@ const WhitepaperSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFA500] mb-4">
+          <h2 className="text-4xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFA500] mb-4 whitespace-nowrap">
             Whitepaper
           </h2>
-          <p className="text-gray-300 max-w-3xl mx-auto">
-            Explore the technical details and vision behind XAWAK in our comprehensive whitepaper
+          <p className="text-gray-300 max-w-3xl mx-auto px-4">
+            <span className="inline-block">Explore the technical details and vision</span> <span className="inline-block">behind XAWAK in our comprehensive whitepaper</span>
           </p>
         </div>
 
@@ -25,10 +25,10 @@ const WhitepaperSection: React.FC = () => {
                 {/* Document Header */}
                 <div className="mb-8 text-center">
                   <div className="flex justify-center mb-4">
-                    <img 
-                      src="/logooo2.jpg" 
-                      alt="XAWAK Logo" 
-                      className="w-16 h-16 object-contain rounded-full" 
+                    <img
+                      src="/logooo2.jpg"
+                      alt="XAWAK Logo"
+                      className="w-16 h-16 object-contain rounded-full"
                     />
                   </div>
                   <h3 className="text-2xl font-orbitron font-bold text-white mb-2">XAWAK Whitepaper</h3>
@@ -111,15 +111,15 @@ const WhitepaperSection: React.FC = () => {
 
               {/* Download Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-lg text-black font-bold transition-transform duration-300 hover:scale-105 shadow-lg shadow-[#FFD700]/20"
                 >
                   <Download className="w-5 h-5 mr-2" />
                   Download PDF
                 </a>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="flex items-center justify-center px-6 py-3 bg-transparent border border-[#FFD700] rounded-lg text-[#FFD700] font-bold transition-all duration-300 hover:bg-[#FFD700]/10"
                 >
                   <ExternalLink className="w-5 h-5 mr-2" />

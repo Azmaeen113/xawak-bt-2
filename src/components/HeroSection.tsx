@@ -42,33 +42,33 @@ const HeroSection: React.FC = () => {
           {/* Headline with Letter Glow Effect */}
           <div className="relative mb-6">
             {/* Headline text with letter glow */}
-            <h1 className="relative z-10 text-4xl sm:text-6xl lg:text-7xl font-bold font-['Orbitron'] animate-fade-in text-center">
-              {/* First part of headline with individual letter glow */}
-              <span className="inline-block">
-                {/* Split text into individual letters for glow effect */}
-                {'Transcend the Speed of Light with '.split('').map((letter, index) => (
-                  letter === ' ' ? (
-                    // Handle spaces properly
-                    <span key={index} className="inline-block">&nbsp;</span>
-                  ) : (
-                    <span key={index} className="relative inline-block">
-                      {/* Letter glow effect */}
-                      <span
-                        className="absolute inset-0 text-[#FFD700] blur-[2px] opacity-70 animate-pulse-glow z-0"
-                        style={{ animationDuration: `${3 + Math.random()}s` }}
-                        aria-hidden="true"
-                      >
-                        {letter}
+            <h1 className="relative z-10 text-4xl sm:text-6xl lg:text-7xl font-bold font-['Orbitron'] animate-fade-in text-center whitespace-pre-wrap">
+              {/* First part of headline with word-by-word glow to prevent splitting */}
+              <div className="inline">
+                {/* Split text into words for glow effect */}
+                {'Transcend the Speed of Light with '.split(' ').map((word, wordIndex) => (
+                  <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em] mb-1">
+                    {/* Split each word into letters */}
+                    {word.split('').map((letter, letterIndex) => (
+                      <span key={letterIndex} className="relative inline-block">
+                        {/* Letter glow effect */}
+                        <span
+                          className="absolute inset-0 text-[#FFD700] blur-[2px] opacity-70 animate-pulse-glow z-0"
+                          style={{ animationDuration: `${3 + Math.random()}s` }}
+                          aria-hidden="true"
+                        >
+                          {letter}
+                        </span>
+                        {/* Actual letter */}
+                        <span className="relative z-10 text-white">{letter}</span>
                       </span>
-                      {/* Actual letter */}
-                      <span className="relative z-10 text-white">{letter}</span>
-                    </span>
-                  )
+                    ))}
+                  </span>
                 ))}
-              </span>
+              </div>
 
               {/* XAWAK with enhanced glow */}
-              <span className="relative inline-block">
+              <span className="relative inline-block whitespace-nowrap">
                 {/* Split XAWAK into individual letters */}
                 {'XAWAK'.split('').map((letter, index) => (
                   <span key={index} className="relative inline-block">

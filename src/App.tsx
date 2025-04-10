@@ -17,9 +17,25 @@ import RocketCursor from './components/RocketCursor';
 
 function App() {
   const [cursorEffect, setCursorEffect] = useState<'sparkle' | 'rocket'>('rocket');
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Toggle cursor effect with 'c' key
+  // Detect mobile devices
   useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth <= 768;
+      setIsMobile(isTouchDevice || isSmallScreen);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Toggle cursor effect with 'c' key (desktop only)
+  useEffect(() => {
+    if (isMobile) return; // Skip on mobile
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === 'c') {
         setCursorEffect(prev => prev === 'sparkle' ? 'rocket' : 'sparkle');
@@ -28,20 +44,25 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isMobile]);
 
-  // Hide default cursor
+  // Hide default cursor (desktop only)
   useEffect(() => {
+    if (isMobile) {
+      document.body.style.cursor = 'auto';
+      return;
+    }
+
     document.body.style.cursor = 'none';
     return () => {
       document.body.style.cursor = 'auto';
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Custom cursor effect */}
-      {cursorEffect === 'sparkle' ? <MouseEffect /> : <RocketCursor />}
+      {/* Custom cursor effect - only on desktop */}
+      {!isMobile && (cursorEffect === 'sparkle' ? <MouseEffect /> : <RocketCursor />)}
 
       <StarBackground />
       <Navigation />
