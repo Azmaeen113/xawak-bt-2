@@ -24,24 +24,108 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="space-y-8">
           {/* Logo */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-12">
             <div className="relative">
               <img
                 src="/logooo2.jpg"
                 alt="XAWAK Logo"
-                className="w-32 h-32 object-contain rounded-full animate-pulse shadow-lg shadow-[#FFD700]/30"
+                className="w-40 h-40 md:w-56 md:h-56 object-contain rounded-full animate-pulse shadow-xl shadow-[#FFD700]/40"
               />
-              <div className="absolute inset-0 bg-[#FFD700]/20 blur-xl rounded-full" />
+              <div className="absolute inset-0 bg-[#FFD700]/30 blur-xl rounded-full" />
+
+              {/* Animated ring */}
+              <div className="absolute -inset-4 rounded-full border-2 border-[#FFD700]/30 animate-spin-slow opacity-70"></div>
+              <div className="absolute -inset-8 rounded-full border border-[#1E90FF]/20 animate-spin-slow opacity-50" style={{ animationDirection: 'reverse', animationDuration: '25s' }}></div>
             </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white font-['Orbitron'] mb-6 animate-fade-in">
-            Transcend the Speed of Light with{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFA500] animate-pulse">
-              XAWAK
-            </span>
-          </h1>
+          {/* Headline with Letter Glow Effect */}
+          <div className="relative mb-6">
+            {/* Headline text with letter glow */}
+            <h1 className="relative z-10 text-4xl sm:text-6xl lg:text-7xl font-bold font-['Orbitron'] animate-fade-in text-center">
+              {/* First part of headline with individual letter glow */}
+              <span className="inline-block">
+                {/* Split text into individual letters for glow effect */}
+                {'Transcend the Speed of Light with '.split('').map((letter, index) => (
+                  letter === ' ' ? (
+                    // Handle spaces properly
+                    <span key={index} className="inline-block">&nbsp;</span>
+                  ) : (
+                    <span key={index} className="relative inline-block">
+                      {/* Letter glow effect */}
+                      <span
+                        className="absolute inset-0 text-[#FFD700] blur-[2px] opacity-70 animate-pulse-glow z-0"
+                        style={{ animationDuration: `${3 + Math.random()}s` }}
+                        aria-hidden="true"
+                      >
+                        {letter}
+                      </span>
+                      {/* Actual letter */}
+                      <span className="relative z-10 text-white">{letter}</span>
+                    </span>
+                  )
+                ))}
+              </span>
+
+              {/* XAWAK with enhanced glow */}
+              <span className="relative inline-block">
+                {/* Split XAWAK into individual letters */}
+                {'XAWAK'.split('').map((letter, index) => (
+                  <span key={index} className="relative inline-block">
+                    {/* Multiple glow layers for XAWAK */}
+                    <span
+                      className="absolute inset-0 text-[#FFD700] blur-[4px] opacity-80 animate-pulse-glow z-0"
+                      style={{ animationDuration: `${2 + Math.random()}s` }}
+                      aria-hidden="true"
+                    >
+                      {letter}
+                    </span>
+                    <span
+                      className="absolute inset-0 text-[#FFA500] blur-[2px] opacity-90 animate-pulse-glow z-0"
+                      style={{ animationDuration: `${2.5 + Math.random()}s`, animationDelay: '0.5s' }}
+                      aria-hidden="true"
+                    >
+                      {letter}
+                    </span>
+                    {/* Actual letter with gradient */}
+                    <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FFA500]">
+                      {letter}
+                    </span>
+                  </span>
+                ))}
+              </span>
+            </h1>
+
+            {/* Subtle light particles around letters */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[...Array(30)].map((_, i) => {
+                const size = Math.random() * 2 + 0.5; // 0.5-2.5px
+                const x = Math.random() * 100; // 0-100%
+                const y = Math.random() * 100; // 0-100%
+                const delay = Math.random() * 5; // 0-5s delay
+                const duration = Math.random() * 3 + 2; // 2-5s duration
+                const color = i % 3 === 0 ? '#FFD700' : (i % 3 === 1 ? '#FFFFFF' : '#FFA500');
+
+                return (
+                  <span
+                    key={i}
+                    className="absolute rounded-full animate-pulse-glow"
+                    style={{
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: color,
+                      boxShadow: `0 0 ${size * 2}px ${color}`,
+                      left: `${x}%`,
+                      top: `${y}%`,
+                      opacity: Math.random() * 0.5 + 0.2, // 0.2-0.7 opacity
+                      animationDuration: `${duration}s`,
+                      animationDelay: `${delay}s`
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
 
           {/* Subtitle */}
           <p className="text-xl sm:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed">

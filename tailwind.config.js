@@ -25,6 +25,7 @@ export default {
         'scroll': 'scroll 2s ease-in-out infinite',
         'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
         'bounce-slow': 'bounce 3s infinite',
+        'particle-move': 'particle-move 4s ease-in-out infinite',
       },
       keyframes: {
         'pulse-glow': {
@@ -52,6 +53,12 @@ export default {
           '50%': {
             transform: 'translateY(10px)',
           },
+        },
+        'particle-move': {
+          '0%': { opacity: 0, transform: 'translate(-50%, -50%) rotate(var(--rotation)) translateX(50%)' },
+          '20%': { opacity: 1, transform: 'translate(-50%, -50%) rotate(var(--rotation)) translateX(100%)' },
+          '80%': { opacity: 1, transform: 'translate(-50%, -50%) rotate(var(--rotation)) translateX(200%)' },
+          '100%': { opacity: 0, transform: 'translate(-50%, -50%) rotate(var(--rotation)) translateX(250%)' },
         },
       },
       backgroundImage: {

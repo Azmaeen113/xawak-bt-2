@@ -28,7 +28,7 @@ const TokenomicsSection: React.FC = () => {
     {
       label: 'Development',
       percentage: 25,
-      color: '#1E3A8A',
+      color: '#FF0000',
       description: 'Fuels ongoing platform innovations',
       icon: <Rocket className="w-6 h-6" />
     },
@@ -42,7 +42,7 @@ const TokenomicsSection: React.FC = () => {
     {
       label: 'Team & Advisors',
       percentage: 15,
-      color: '#0F172A',
+      color: '#1E3A8A',
       description: 'Aligns long-term vision with growth',
       icon: <Shield className="w-6 h-6" />
     }
@@ -121,7 +121,7 @@ const TokenomicsSection: React.FC = () => {
     if (!particlesRef.current) return;
 
     const container = particlesRef.current;
-    const colors = ['#FFD700', '#1E3A8A', '#6A0DAD', '#FFFFFF'];
+    const colors = ['#FFD700', '#FF0000', '#6A0DAD', '#1E3A8A', '#FFFFFF'];
 
     // Create 30 particles
     for (let i = 0; i < 30; i++) {
@@ -187,7 +187,7 @@ const TokenomicsSection: React.FC = () => {
             <div ref={particlesRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
 
             {/* Glowing background effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-radial from-[#1E3A8A]/30 via-transparent to-transparent blur-xl animate-pulse-glow"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-radial from-[#FF0000]/30 via-transparent to-transparent blur-xl animate-pulse-glow"></div>
 
             <div className="aspect-square relative">
               {/* Chart container with 3D effect */}
@@ -318,7 +318,7 @@ const TokenomicsSection: React.FC = () => {
                 })}
 
                 {/* Animated overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#1E3A8A]/10 to-[#6A0DAD]/10 rounded-full animate-spin-slow opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF0000]/10 via-[#1E3A8A]/10 to-[#6A0DAD]/10 rounded-full animate-spin-slow opacity-50" />
 
                 {/* Glowing ring */}
                 <div className="absolute inset-[-5px] rounded-full border-4 border-[#FFD700]/20 animate-pulse-glow"></div>

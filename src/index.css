@@ -8,6 +8,11 @@
   html {
     font-family: 'Roboto', sans-serif;
     scroll-behavior: smooth;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-top: 80px; /* Adjust based on your header height */
+    overscroll-behavior-y: none;
+    will-change: scroll-position;
   }
 
   body {
@@ -87,22 +92,32 @@
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - optimized for ultra-smooth scrolling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 215, 0, 0.5);
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 3px solid rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 215, 0, 0.7);
+  border: 3px solid rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
+}
+
+/* Prevent scrollbar from causing layout shifts */
+html {
+  scrollbar-gutter: stable;
 }
 
 /* Smooth Transitions */

@@ -29,9 +29,9 @@ const AboutSection: React.FC = () => {
               The XAWAK Universe
             </h2>
             <p className="text-gray-300 text-lg">
-              XAWAK represents the next evolution in blockchain technology, 
-              combining cutting-edge innovation with unparalleled security and 
-              scalability. Our mission is to create a decentralized ecosystem 
+              XAWAK represents the next evolution in blockchain technology,
+              combining cutting-edge innovation with unparalleled security and
+              scalability. Our mission is to create a decentralized ecosystem
               that transcends traditional boundaries.
             </p>
             <div className="space-y-6">
@@ -53,11 +53,11 @@ const AboutSection: React.FC = () => {
               Learn More
             </button>
           </div>
-          
+
           <div className="relative">
             <div className="aspect-square relative">
               <div className="absolute inset-0 flex items-center justify-center">
-                <Rocket 
+                <Rocket
                   className="w-48 h-48 text-[#FFD700] animate-pulse transform rotate-45"
                   style={{
                     filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.5))'

@@ -7,27 +7,72 @@ const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
+    // Optimized scroll handling with debouncing and throttling
+    let lastScrollY = 0;
+    let ticking = false;
+    let activeUpdateTimeout: number | null = null;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      lastScrollY = window.pageYOffset;
 
-      // Update active section based on scroll position
-      const sections = document.querySelectorAll('section[id]');
-      const scrollY = window.scrollY;
+      // Handle navbar visibility immediately for responsive feel
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(lastScrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
 
-      sections.forEach(section => {
-        const sectionTop = (section as HTMLElement).offsetTop - 100;
-        const sectionHeight = (section as HTMLElement).offsetHeight;
-        const sectionId = section.getAttribute('id') || '';
+      // Debounce the more expensive section detection
+      if (activeUpdateTimeout) {
+        clearTimeout(activeUpdateTimeout);
+      }
 
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          setActiveSection(sectionId);
+      activeUpdateTimeout = window.setTimeout(() => {
+        // Use IntersectionObserver API for better performance
+        const viewportHeight = window.innerHeight;
+        const viewportMiddle = viewportHeight / 2;
+
+        // Find which section is most visible in the viewport
+        const sections = document.querySelectorAll('section[id]');
+        let bestVisibleSection = '';
+        let maxVisibleArea = 0;
+
+        sections.forEach(section => {
+          const rect = section.getBoundingClientRect();
+          const sectionId = section.getAttribute('id') || '';
+
+          // Calculate how much of the section is visible
+          const visibleTop = Math.max(0, rect.top);
+          const visibleBottom = Math.min(viewportHeight, rect.bottom);
+          const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+          // Give more weight to sections near the middle of the viewport
+          const distanceFromMiddle = Math.abs(viewportMiddle - (visibleTop + visibleBottom) / 2);
+          const visibleArea = visibleHeight * (1 - distanceFromMiddle / viewportHeight);
+
+          if (visibleArea > maxVisibleArea) {
+            maxVisibleArea = visibleArea;
+            bestVisibleSection = sectionId;
+          }
+        });
+
+        if (bestVisibleSection && bestVisibleSection !== activeSection) {
+          setActiveSection(bestVisibleSection);
         }
-      });
+      }, 100); // 100ms debounce for section detection
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    // Use passive event listener with capture for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    handleScroll(); // Initial call
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll, { capture: true });
+      if (activeUpdateTimeout) clearTimeout(activeUpdateTimeout);
+    };
+  }, [activeSection]);
 
   const navItems = [
     { name: 'Home', href: '#home' },
@@ -36,21 +81,54 @@ const Navigation: React.FC = () => {
     { name: 'Roadmap', href: '#roadmap' },
     { name: 'NFTs', href: '#nfts' },
     { name: 'Team', href: '#team' },
+    { name: 'Infinity', href: '#infinity-logo' },
     { name: 'Community', href: '#community' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Whitepaper', href: '#whitepaper' },
+    { name: 'Bundles', href: '#bundles' },
   ];
 
   const handleNavClick = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      const offset = 80; // Height of the fixed navbar
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      // Get the height of the navbar for proper offset
+      const navbar = document.querySelector('nav');
+      const navbarHeight = navbar ? navbar.getBoundingClientRect().height : 80;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      // Calculate position with a bit of extra padding for better visual spacing
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight - 20;
+
+      // Use custom smooth scrolling for better performance
+      const startPosition = window.pageYOffset;
+      const distance = offsetPosition - startPosition;
+      const duration = 800; // ms - longer duration for smoother feel
+      let startTime: number | null = null;
+
+      // Easing function for natural motion
+      const easeInOutCubic = (t: number): number => {
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+
+      const animateScroll = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+
+        window.scrollTo(0, startPosition + distance * easedProgress);
+
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+
+      // Update active section manually for immediate feedback
+      const sectionId = href.substring(1);
+      setActiveSection(sectionId);
     }
     setIsMobileMenuOpen(false);
   };
@@ -70,9 +148,9 @@ const Navigation: React.FC = () => {
             <img
               src="/logooo2.jpg"
               alt="XAWAK Logo"
-              className="h-10 w-10 object-contain rounded-full transition-all duration-300 group-hover:scale-105"
+              className="h-14 w-14 md:h-16 md:w-16 object-contain rounded-full transition-all duration-300 group-hover:scale-105 shadow-lg shadow-[#1E90FF]/20"
             />
-            <span className="ml-2 text-2xl font-bold text-white font-['Orbitron'] group-hover:text-[#FFD700] transition-colors duration-300">
+            <span className="ml-3 text-2xl md:text-3xl font-bold text-white font-['Orbitron'] group-hover:text-[#FFD700] transition-colors duration-300">
               XAWAK
             </span>
           </div>

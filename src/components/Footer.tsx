@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative py-12 bg-gradient-to-t from-space-blue/20 to-transparent">
+    <footer id="footer" className="relative py-12 bg-gradient-to-t from-space-blue/20 to-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
